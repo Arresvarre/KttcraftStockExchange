@@ -6,19 +6,18 @@ import ksedb
 
 print(ksedb.get_from_user(286776720449601537))
 
-#from discord import *
-#from discord.ext import commands
-#from discord.utils import get
-#
-#intents = Intents.default()
-#intents.members = True
-#intents.messages = True
-#
+from discord import *
+from discord.ext import commands
+
+intents = Intents.default()
+intents.members = True
+intents.messages = True
+
 #command_channel_ids = (822020156065579032, 905425177557483562)
-#TOKEN = os.getenv("DISCORD_TOKEN")
-#print(TOKEN)
+TOKEN = os.getenv("DISCORD_TOKEN")
+print(TOKEN)
 #
-#bot = commands.Bot(command_prefix=".", intents=intents)
+bot = commands.Bot(command_prefix=".", intents=intents)
 
 
 #def log_channel():
@@ -112,9 +111,9 @@ print(ksedb.get_from_user(286776720449601537))
 #
 #
 #
-#@bot.command()
-#async def test(ctx):
-#    await ctx.send('HEj')
-#    pass
-#
-#bot.run(TOKEN)
+@bot.command()
+async def test(ctx):
+    await ctx.send('HEj')
+    pass
+
+bot.run(TOKEN)
