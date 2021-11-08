@@ -1,4 +1,4 @@
-
+import os
 
 from discord import *
 from discord.ext import commands
@@ -15,7 +15,7 @@ bot = commands.Bot(command_prefix=".", intents=intents)
 
 #from dbfunc import *
 from mc import *
-import os
+
 
 import ksedb
 
