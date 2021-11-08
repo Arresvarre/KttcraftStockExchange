@@ -19,7 +19,7 @@ updated_addPrice_false = 'Tog bort behörighet för spelare att ändra pris.'
 update_staff_true = 'Gav spelare personalbehörighet.'
 update_staff_false = 'Tog bort bersonalbehörighet från spelare.'
 company_not_in_database = 'Företaget finns inte i databasen.'
-updated_stock_price = 'Updaterade aktiens pris'
+_updated_stock_price = 'Updaterade aktiens pris'
 user_stock_updated = 'Updaterade spelares aktieinnehav'
 
 
@@ -71,7 +71,7 @@ def update_stock_price(ticker, discordId, price):
     if addPrice_perm(discordId):
         if company_in_database(ticker):
             update_price(ticker, get_from_user(discordId)[0], price)
-            return updated_stock_price
+            return _updated_stock_price
         else:
             return company_not_in_database
     else:

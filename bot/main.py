@@ -1,9 +1,9 @@
-#from dbfunc import *
+from dbfunc import update_stock_price
 from mc import *
 import os
 
 #import ksedb
-
+print(update_stock_price('FTHF', 286776720449601537, 2000))
 
 from discord import *
 from discord.ext import commands
