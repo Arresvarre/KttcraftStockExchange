@@ -18,19 +18,19 @@ print(TOKEN)
 bot = commands.Bot(command_prefix=".", intents=intents)
 
 
-def log_channel():
-    id = os.getenv("LOG_ID")
-    return bot.get_channel(int(id))
-
-
-def embed_message(author, cause, text, thumbnail=None, color=0x00d9ff, footer=None):
-    embed = Embed(title=cause, description=text, color=color)
-    embed.set_author(name=author)
-    if thumbnail:
-        embed.set_thumbnail(url=thumbnail)
-    if footer:
-        embed.set_footer(text=footer)
-    return embed
+#def log_channel():
+#    id = os.getenv("LOG_ID")
+#    return bot.get_channel(int(id))
+#
+#
+#def embed_message(author, cause, text, thumbnail=None, color=0x00d9ff, footer=None):
+#    embed = Embed(title=cause, description=text, color=color)
+#    embed.set_author(name=author)
+#    if thumbnail:
+#        embed.set_thumbnail(url=thumbnail)
+#    if footer:
+#        embed.set_footer(text=footer)
+#    return embed
 #
 #
 #async def command_in_command_channel(ctx):
