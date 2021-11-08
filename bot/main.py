@@ -10,14 +10,12 @@ intents.messages = True
 #command_channel_ids = (822020156065579032, 905425177557483562)
 TOKEN = os.getenv("DISCORD_TOKEN")
 print(TOKEN)
-#
+
 bot = commands.Bot(command_prefix=".", intents=intents)
 
-#from dbfunc import *
+from dbfunc import *
 from mc import *
-
-
-import ksedb
+from ksedb import *
 
 
 

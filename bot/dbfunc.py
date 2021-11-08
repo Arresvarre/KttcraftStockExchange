@@ -23,7 +23,6 @@ _updated_stock_price = 'Updaterade aktiens pris'
 user_stock_updated = 'Updaterade spelares aktieinnehav'
 
 
-red_color = 0x00d9ff
 
 
 def add_user(discordId,uuid, addedby_discordId):
