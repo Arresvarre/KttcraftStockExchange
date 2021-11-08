@@ -1,5 +1,5 @@
-from dbfunc import *
-from mc import *
+#from dbfunc import *
+#from mc import *
 import os
 
 
