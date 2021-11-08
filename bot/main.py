@@ -2,7 +2,6 @@ from dbfunc import *
 from mc import *
 import os
 
-import ksedb
 
 from discord import *
 from discord.ext import commands
