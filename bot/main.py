@@ -1,5 +1,5 @@
-#from dbfunc import *
-#from mc import *
+from dbfunc import *
+from mc import *
 import os
 
 
@@ -11,26 +11,26 @@ intents = Intents.default()
 intents.members = True
 intents.messages = True
 
-#command_channel_ids = (822020156065579032, 905425177557483562)
+command_channel_ids = (822020156065579032, 905425177557483562)
 TOKEN = os.getenv("DISCORD_TOKEN")
 print(TOKEN)
 
 bot = commands.Bot(command_prefix=".", intents=intents)
 
 
-#def log_channel():
-#    id = os.getenv("LOG_ID")
-#    return bot.get_channel(int(id))
-#
-#
-#def embed_message(author, cause, text, thumbnail=None, color=0x00d9ff, footer=None):
-#    embed = Embed(title=cause, description=text, color=color)
-#    embed.set_author(name=author)
-#    if thumbnail:
-#        embed.set_thumbnail(url=thumbnail)
-#    if footer:
-#        embed.set_footer(text=footer)
-#    return embed
+def log_channel():
+    id = os.getenv("LOG_ID")
+    return bot.get_channel(int(id))
+
+
+def embed_message(author, cause, text, thumbnail=None, color=0x00d9ff, footer=None):
+    embed = Embed(title=cause, description=text, color=color)
+    embed.set_author(name=author)
+    if thumbnail:
+        embed.set_thumbnail(url=thumbnail)
+    if footer:
+        embed.set_footer(text=footer)
+    return embed
 #
 #
 #async def command_in_command_channel(ctx):
@@ -41,9 +41,9 @@ bot = commands.Bot(command_prefix=".", intents=intents)
 #        return False
 #
 #
-#@bot.event
-#async def on_ready():
-#    await log_channel().send(embed=embed_message('KSE LOG', 'Ansluten', '', color=0x7FFF00))
+@bot.event
+async def on_ready():
+    await log_channel().send(embed=embed_message('KSE LOG', 'Ansluten', '', color=0x7FFF00))
 #
 #
 #@bot.event
@@ -111,7 +111,7 @@ bot = commands.Bot(command_prefix=".", intents=intents)
 #
 @bot.command()
 async def test(ctx):
-    ctx.send('HEj')
+    await ctx.send('HEj')
     pass
 
 bot.run(TOKEN)
