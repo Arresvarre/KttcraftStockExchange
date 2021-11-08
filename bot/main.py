@@ -1,21 +1,24 @@
-#from dbfunc import *
-#from mc import *
-import os
+from dbfunc import *
+from mc import *
+#import os
 
+import ksedb
 
-from discord import *
-from discord.ext import commands
-from discord.utils import get
+print(ksedb.get_from_user(286776720449601537))
 
-intents = Intents.default()
-intents.members = True
-intents.messages = True
-
-command_channel_ids = (822020156065579032, 905425177557483562)
-TOKEN = os.getenv("DISCORD_TOKEN")
-print(TOKEN)
-
-bot = commands.Bot(command_prefix=".", intents=intents)
+#from discord import *
+#from discord.ext import commands
+#from discord.utils import get
+#
+#intents = Intents.default()
+#intents.members = True
+#intents.messages = True
+#
+#command_channel_ids = (822020156065579032, 905425177557483562)
+#TOKEN = os.getenv("DISCORD_TOKEN")
+#print(TOKEN)
+#
+#bot = commands.Bot(command_prefix=".", intents=intents)
 
 
 #def log_channel():
@@ -109,9 +112,9 @@ bot = commands.Bot(command_prefix=".", intents=intents)
 #
 #
 #
-@bot.command()
-async def test(ctx):
-    await ctx.send('HEj')
-    pass
-
-bot.run(TOKEN)
+#@bot.command()
+#async def test(ctx):
+#    await ctx.send('HEj')
+#    pass
+#
+#bot.run(TOKEN)
