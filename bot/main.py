@@ -1,10 +1,9 @@
-from dbfunc import *
-from mc import *
+#from dbfunc import *
+#from mc import *
 import os
 
-import ksedb
+#import ksedb
 
-print(ksedb.get_from_user(286776720449601537))
 
 from discord import *
 from discord.ext import commands
