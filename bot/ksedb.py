@@ -188,3 +188,14 @@ def get_from_company(ticker, mycursor=None, mydb=None):
             ''')
     result = mycursor.fetchall()
     return result[0]
+
+
+@databse_function
+def get_price(ticker, mycursor=None, mydb=None):
+    mycursor.execute(f'''
+            SELECT price, time
+            FROM price
+            WHERE company = "{ticker}"
+            ''')
+    result = mycursor.fetchall()
+    return result

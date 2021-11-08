@@ -11,7 +11,7 @@ command_channel_ids = (822020156065579032, 905425177557483562)
 TOKEN = os.getenv("DISCORD_TOKEN")
 print(TOKEN)
 
-bot = commands.Bot(command_prefix=".", intents=intents)
+bot = commands.Bot(command_prefix=".", intents=intents, case_insensitive=True)
 
 from dbfunc import *
 from mc import *
@@ -35,7 +35,9 @@ def embed_message(author, cause, text, thumbnail=None, color=0x00d9ff, footer=No
 
 
 async def command_in_command_channel(ctx):
-    if ctx.channel.id == 822020156065579032 or ctx.channel.id == 905425177557483562:
+    import json
+    env_list = json.loads(os.environ['COMMAND_CHANNELS'])
+    if ctx.channel.id in env_list:
         return True
     else:
         await ctx.message.delete()
@@ -63,7 +65,7 @@ async def on_message_edit(m, m2):
         await log_channel().send(embed=embed_message('KSE LOG', f'{m.author.name} har ändrat ett meddelande',f'Innan:\n {m.content}\nEfter:\n {m2.content}', thumbnail=m.author.avatar_url, footer=f'MessageID: {m.id}'))
 
 
-@bot.command()
+@bot.command(aliases=['u'])
 async def user(ctx, user:Member = None, mc_name = None):
     e = ''
     if await command_in_command_channel(ctx):
@@ -76,7 +78,7 @@ async def user(ctx, user:Member = None, mc_name = None):
                                   f'-INFO-\n'
                                   f'UUID : {user[6]}\n'
                                   f'DiscordId : {user[1]}\n'
-                                  f'Behörighet : {bool(user[5])} {bool(user[4])}\n '
+                                  f'Behörighet : {"Personal behörighet" if user[5] else ""}{"Ändra pris behörighet" if user [4] and not user[5] else ""}{"Inga" if not user[4] and not user[5] else ""}\n'
                                   f'Tillagd : {user[2]} av {UUID_to_mc_name(get_from_user_id(user[3])[6])}',
                                   thumbnail=mc.mc_head(user[6]))
             else:
@@ -107,12 +109,24 @@ async def user_error(ctx, error):
         await ctx.send(embed=e)
 
 
+@bot.command(alias=['p'])
+async def price(ctx, ticker, price=None):
+    if await command_in_command_channel(ctx):
+        if company_in_database(ticker):
+            if price is None:
+                c = get_from_company(ticker)
+                price = get_price(ticker)
+                await ctx.send(embed=embed_message('KSE Bot', f'Pris för {c[0]}', str(price[-1][0]) + " mm"))
+
+
+
 
 
 
 @bot.command()
 async def test(ctx):
-    await ctx.send(ksedb.get_from_user(ctx.author.id))
+    import ksedb
+    await ctx.send(ksedb.get_price('FTHF'))
     pass
 
 bot.run(TOKEN)
