@@ -1,9 +1,4 @@
-from dbfunc import update_stock_price
-from mc import *
-import os
 
-#import ksedb
-print(update_stock_price('FTHF', 286776720449601537, 2000))
 
 from discord import *
 from discord.ext import commands
@@ -17,6 +12,13 @@ TOKEN = os.getenv("DISCORD_TOKEN")
 print(TOKEN)
 #
 bot = commands.Bot(command_prefix=".", intents=intents)
+
+#from dbfunc import *
+from mc import *
+import os
+
+import ksedb
+
 
 
 #def log_channel():
@@ -112,7 +114,7 @@ bot = commands.Bot(command_prefix=".", intents=intents)
 #
 @bot.command()
 async def test(ctx):
-    await ctx.send('HEj')
+    await ctx.send(ksedb.get_from_user(ctx.author.id))
     pass
 
 bot.run(TOKEN)
