@@ -109,8 +109,8 @@ bot = commands.Bot(command_prefix=".", intents=intents)
 #
 #
 #
-#@bot.command()
-#async def test(ctx):
-#    pass
-#
+@bot.command()
+async def test(ctx):
+    pass
+
 bot.run(TOKEN)
