@@ -1,5 +1,5 @@
 #from dbfunc import *
-#from mc import *
+from mc import *
 import os
 
 #import ksedb
@@ -110,9 +110,9 @@ bot = commands.Bot(command_prefix=".", intents=intents)
 #
 #
 #
-#@bot.command()
-#async def test(ctx):
-#    await ctx.send('HEj')
-#    pass
-#
+@bot.command()
+async def test(ctx):
+    await ctx.send('HEj')
+    pass
+
 bot.run(TOKEN)
