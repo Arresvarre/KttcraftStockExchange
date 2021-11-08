@@ -41,9 +41,9 @@ def embed_message(author, cause, text, thumbnail=None, color=0x00d9ff, footer=No
 #        return False
 #
 #
-@bot.event
-async def on_ready():
-    await log_channel().send(embed=embed_message('KSE LOG', 'Ansluten', '', color=0x7FFF00))
+#@bot.event
+#async def on_ready():
+#    await log_channel().send(embed=embed_message('KSE LOG', 'Ansluten', '', color=0x7FFF00))
 #
 #
 #@bot.event
