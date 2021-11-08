@@ -111,6 +111,7 @@ bot = commands.Bot(command_prefix=".", intents=intents)
 #
 @bot.command()
 async def test(ctx):
+    ctx.send('HEj')
     pass
 
 bot.run(TOKEN)
