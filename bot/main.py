@@ -119,7 +119,7 @@ async def price(ctx, ticker, price=None):
                 price = get_price(ticker)
                 e = embed_message('KSE Bot', f'Pris för {c[0]}', str(price[-1][0]) + " mm", thumbnail=c[5])
             elif price is not None:
-                u = update_stock_price(ticker, ctx.id, price)
+                u = update_stock_price(ticker, ctx.author.id, price)
                 if u:
                     e = embed_message('KSE Bot', f'Uppdaterat pris för {c[0]}', price + ' mm', thumbnail=c[5], color=0x7FFF00)
         else:
