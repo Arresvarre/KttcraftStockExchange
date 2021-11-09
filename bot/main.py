@@ -111,12 +111,24 @@ async def user_error(ctx, error):
 
 @bot.command(alias=['p'])
 async def price(ctx, ticker, price=None):
+    e = ''
     if await command_in_command_channel(ctx):
         if company_in_database(ticker):
+            c = get_from_company(ticker)
             if price is None:
-                c = get_from_company(ticker)
                 price = get_price(ticker)
-                await ctx.send(embed=embed_message('KSE Bot', f'Pris för {c[0]}', str(price[-1][0]) + " mm"))
+                e = embed_message('KSE Bot', f'Pris för {c[0]}', str(price[-1][0]) + " mm")
+            elif price is not None:
+                u = update_stock_price(ticker, ctx.id, price)
+                if u:
+                    e = embed_message('KSE Bot', f'Uppdaterat pris för {c[0]}', price + ' mm', thumbnail=c[1])
+                    pass
+            else:
+                #syntax
+                pass
+        else:
+            #Company not in db
+            pass
 
 
 
@@ -126,7 +138,7 @@ async def price(ctx, ticker, price=None):
 @bot.command()
 async def test(ctx):
     import ksedb
-    await ctx.send(ksedb.get_price('FTHF'))
+    await ctx.send(get_from_company('FTHF'))
     pass
 
 bot.run(TOKEN)

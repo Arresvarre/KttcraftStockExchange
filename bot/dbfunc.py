@@ -70,11 +70,11 @@ def update_stock_price(ticker, discordId, price):
     if addPrice_perm(discordId):
         if company_in_database(ticker):
             update_price(ticker, get_from_user(discordId)[0], price)
-            return _updated_stock_price
+            return True, _updated_stock_price
         else:
-            return company_not_in_database
+            return False, company_not_in_database
     else:
-        return not_addprice_permission
+        return False, not_addprice_permission
 
 
 def user_stock(discordId, ticker, quantity, addedby_discordId):
