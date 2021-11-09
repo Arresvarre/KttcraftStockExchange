@@ -117,19 +117,14 @@ async def price(ctx, ticker, price=None):
             c = get_from_company(ticker)
             if price is None:
                 price = get_price(ticker)
-                e = embed_message('KSE Bot', f'Pris för {c[0]}', str(price[-1][0]) + " mm")
+                e = embed_message('KSE Bot', f'Pris för {c[0]}', str(price[-1][0]) + " mm", thumbnail=c[5])
             elif price is not None:
                 u = update_stock_price(ticker, ctx.id, price)
                 if u:
-                    e = embed_message('KSE Bot', f'Uppdaterat pris för {c[0]}', price + ' mm', thumbnail=c[1])
-                    pass
-            else:
-                #syntax
-                pass
+                    e = embed_message('KSE Bot', f'Uppdaterat pris för {c[0]}', price + ' mm', thumbnail=c[5], color=0x7FFF00)
         else:
-            #Company not in db
-            pass
-
+            e = embed_message('KSE Bot', 'Error', f'{ticker} finns inte i databasen', color=0xDC143C)
+    ctx.send(embed=e)
 
 
 
