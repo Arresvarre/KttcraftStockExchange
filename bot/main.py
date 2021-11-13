@@ -149,7 +149,7 @@ async def company(ctx, ticker):
     if await command_in_command_channel(ctx):
         if company_in_database(ticker):
             c = get_from_company(ticker)
-            e = embed_message('KSE Bot', f'Info om {c[0]}', f'Kortnamn: {c[1]}\nGrundare: {UUID_to_mc_name(get_from_user_id(c[3])[6])}\nTillagd: {c[2]} av {UUID_to_mc_name(get_from_user_id(c[4])[6])}', color=0x7FFF00)
+            e = embed_message('KSE Bot', f'Info om {c[0]}', f'Kortnamn: {c[1]}\nGrundare: {UUID_to_mc_name(get_from_user_id(c[3])[6])}\nTillagd: {c[2]} av {UUID_to_mc_name(get_from_user_id(c[4])[6])}', color=0x7FFF00, thumbnail=c[5])
         else:
             e = embed_message('KSE Bot', 'Error', f'{ticker.upper()} finns inte i databasen', color=0xDC143C)
     await ctx.send(embed=e)
