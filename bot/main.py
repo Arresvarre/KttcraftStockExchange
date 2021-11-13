@@ -176,12 +176,13 @@ async def company(ctx, ticker, subc=None):
 
 
 @bot.command()
-async def stocks(ctx, player:Member=None):
+async def stocks(ctx, player:Member=None, ticker=None, quantity=0):
     def stocks_message(u):
         stocks = ''
         print(get_user_stock(u[0]))
         for s in get_user_stock(u[0]):
-            stocks += f"{s[1]}: {s[0]}\n"
+            if s[0]:
+                stocks += f"{s[1]}: {s[0]}\n"
         return embed_message('KSE Bot', f'{UUID_to_mc_name(u[6])}s aktier', stocks, thumbnail=mc_head(u[6]))
 
     e = ''
