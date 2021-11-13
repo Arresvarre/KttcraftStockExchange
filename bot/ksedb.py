@@ -191,6 +191,17 @@ def get_from_company(ticker, mycursor=None, mydb=None):
 
 
 @databse_function
+def get_from_board(ticker, mycursor=None, mydb=None):
+    mycursor.execute(f'''
+            SELECT *
+            FROM board
+            WHERE ticker = '{ticker}';
+            ''')
+    result = mycursor.fetchall()
+    return result
+
+
+@databse_function
 def get_price(ticker, mycursor=None, mydb=None):
     mycursor.execute(f'''
             SELECT price, time
