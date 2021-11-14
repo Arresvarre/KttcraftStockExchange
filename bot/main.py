@@ -128,6 +128,9 @@ async def price(ctx, ticker, price=None):
                 u = update_stock_price(ticker, ctx.author.id, price)
                 if u:
                     e = embed_message('KSE Bot', f'Uppdaterat pris för {c[0]}', price + ' mm', thumbnail=c[5], color=0x7FFF00)
+                    if get_from_company(ticker)[4]:
+                        print(get_from_company(ticker)[4])
+                        print(get_from_company(ticker))
         else:
             e = embed_message('KSE Bot', 'Error', f'{ticker.upper()} finns inte i databasen', color=0xDC143C)
     await ctx.send(embed=e)
@@ -204,6 +207,5 @@ async def test(ctx):
     await ctx.send(get_from_company('FTHF'))
     pass
 
-print(get_from_board('FTHF'))
 
 bot.run(TOKEN)
