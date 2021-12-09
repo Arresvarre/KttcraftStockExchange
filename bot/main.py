@@ -190,12 +190,21 @@ async def stocks(ctx, player:Member=None, ticker=None, quantity=0):
         if player is None:
             u = get_from_user(ctx.author.id)
             e = stocks_message(u)
-        else:
+        elif ticker is None:
             if user_in_database(player.id):
                 u = get_from_user(player.id)
                 e = stocks_message(u)
             else:
                 e = embed_message('KSE Bot', 'Error', f'Spelare är inte i databas', color=0xDC143C)
+        elif ticker is not None:
+            r = user_stock(player.id, ticker, quantity, ctx.author.id)
+            if r[0]:
+                e = embed_message('KSE Bot', 'Aktieinnehav', r[1], color=0x7FFF00)
+            else:
+                e = embed_message('KSE Bot', 'Aktieinnehav', r[1], color=0xDC143C)
+        else:
+            pass
+
     await ctx.send(embed=e)
 
 @bot.command()

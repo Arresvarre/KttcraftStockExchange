@@ -82,10 +82,10 @@ def user_stock(discordId, ticker, quantity, addedby_discordId):
         if user_in_database(discordId):
             if company_in_database(ticker):
                 update_user_stock(get_from_user(discordId)[0], ticker, quantity)
-                return user_stock_updated
+                return True, f"Uppdaterade {mc.UUID_to_mc_name(get_from_user(discordId)[6])}s {get_from_company(ticker)[1]} aktier till {quantity}"
             else:
-                return company_not_in_database
+                return False, f"{ticker} finns inte i databasen."
         else:
-            return user_not_in_database
+            return f"Spelare finns inte i databasen finns inte i databasen."
     else:
-        return not_staff_permission
+        return f"Du har inte peronalbehörighet."
