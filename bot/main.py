@@ -170,6 +170,21 @@ async def company(ctx, ticker, subc=None):
                         else:
                             m += f"{UUID_to_mc_name(get_from_user_id(i[0])[6])}\n"
                     e = embed_message('KSE Bot', f'{c[0]}s styrelse', m, thumbnail=c[5])
+                elif subc == "shareholders":
+                    if company_in_database(ticker):
+                        shareholders = []
+                        m = ''
+                        for i in get_shareholders(ticker):
+                            shareholders.append(i)
+                        def sort_shareholders(obj):
+                            return obj[1]
+                        shareholders.sort(key=sort_shareholders)
+                        shareholders.reverse()
+                        for i in shareholders:
+                            m += f'{UUID_to_mc_name(get_from_user_id(i[0])[6])} : {i[1]}\n'
+                        e = embed_message('KSE Bot', f'{c[0]}s aktieägare', m, thumbnail=c[5])
+                    else:
+                        e = embed_message('KSE Bot', 'Error', f'{ticker.upper()} finns inte i databasen', color=0xDC143C)
 
         else:
             e = embed_message('KSE Bot', 'Error', f'{ticker.upper()} finns inte i databasen', color=0xDC143C)
@@ -213,7 +228,7 @@ async def stocks(ctx, player:Member=None, ticker=None, quantity=0):
 @bot.command()
 async def test(ctx):
     import ksedb
-    await ctx.send(get_from_company('FTHF'))
+    await ctx.send(get_shareholders("FTHF"))
     pass
 
 

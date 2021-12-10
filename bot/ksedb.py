@@ -210,3 +210,14 @@ def get_price(ticker, mycursor=None, mydb=None):
             ''')
     result = mycursor.fetchall()
     return result
+
+
+@databse_function
+def get_shareholders(ticker, mycursor=None, mydb=None):
+    mycursor.execute(f'''
+            SELECT user, quantity
+            FROM user_stock
+            WHERE ticker ="{ticker}"
+            ''')
+    result = mycursor.fetchall()
+    return result
