@@ -181,7 +181,8 @@ async def company(ctx, ticker, subc=None):
                         shareholders.sort(key=sort_shareholders)
                         shareholders.reverse()
                         for i in shareholders:
-                            m += f'{UUID_to_mc_name(get_from_user_id(i[0])[6])} : {i[1]}\n'
+                            if i[1]:
+                                m += f'{UUID_to_mc_name(get_from_user_id(i[0])[6])} : {i[1]}\n'
                         e = embed_message('KSE Bot', f'{c[0]}s aktieägare', m, thumbnail=c[5])
                     else:
                         e = embed_message('KSE Bot', 'Error', f'{ticker.upper()} finns inte i databasen', color=0xDC143C)
@@ -200,7 +201,7 @@ async def stocks(ctx, player:Member=None, ticker=None, quantity=0):
         print(get_user_stock(u[0]))
         for s in get_user_stock(u[0]):
             if s[0]:
-                stocks += f"{s[1]}: {s[0]} {type(s[0])}\n"
+                stocks += f"{s[1]}: {s[0]}\n"
         return embed_message('KSE Bot', f'{UUID_to_mc_name(u[6])}s aktier', stocks, thumbnail=mc_head(u[6]))
 
     e = ''
