@@ -46,7 +46,8 @@ async def command_in_command_channel(ctx):
 
 @bot.event
 async def on_ready():
-    await log_channel().send(embed=embed_message('KSE LOG', 'Ansluten', '', color=0x7FFF00))
+    #await log_channel().send(embed=embed_message('KSE LOG', 'Ansluten', '', color=0x7FFF00))
+    pass
 
 
 @bot.event
