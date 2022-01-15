@@ -198,12 +198,33 @@ async def company(ctx, ticker, subc=None):
 @bot.command()
 async def stocks(ctx, player:Member=None, ticker=None, quantity=0):
     def stocks_message(u):
-        stocks = ''
+
+
+        embed_stock = Embed(title=f'{UUID_to_mc_name(u[6])}s aktier', color=0x00d9ff)
+        embed_stock.set_author(name="KSE Bot")
+        embed_stock.set_thumbnail(url=mc_head(u[6]))
+
+        total = 0
         print(get_user_stock(u[0]))
         for s in get_user_stock(u[0]):
             if s[0]:
-                stocks += f"{s[1]}: {s[0]}\n"
-        return embed_message('KSE Bot', f'{UUID_to_mc_name(u[6])}s aktier', stocks, thumbnail=mc_head(u[6]))
+                total += s[0] * get_price(s[1])[-1][0]
+                embed_stock.add_field(name=s[1], value=f"{s[0]} st\n{round((get_price(s[1])[-1][0] * s[0])/1000)} kmm", inline=True)
+            print(get_price(s[1])[-1][0])
+
+        prefix = "k"
+        if total < 1000000:
+            total = round(total/1000)
+        else:
+            total = round(total/1000000)
+            prefix = "M"
+
+
+
+
+        embed_stock.add_field(name="TOTAL", value=f"{total} {prefix}mm")
+
+        return embed_stock
 
     e = ''
     if await command_in_command_channel(ctx):
