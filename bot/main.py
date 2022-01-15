@@ -155,7 +155,7 @@ async def company(ctx, ticker, subc=None):
             c = get_from_company(ticker)
             if subc is None:
 
-                e = embed_message('KSE Bot', f'Info om {c[0]}', f'Kortnamn: {c[1]}\nGrundare: {UUID_to_mc_name(get_from_user_id(c[3])[6])}\nTillagd: {c[2]} av {UUID_to_mc_name(get_from_user_id(c[4])[6])}', thumbnail=c[5])
+                e = embed_message('KSE Bot', f'Info om {c[0]}', f'Kortnamn: {c[1]}\nGrundare: {UUID_to_mc_name(get_from_user_id(c[3])[6])}\nAntal aktier: {c[9]}st\nTillagd: {c[2]} av {UUID_to_mc_name(get_from_user_id(c[4])[6])}', thumbnail=c[5])
             else:
                 if subc == "board":
                     board = []
