@@ -18,6 +18,14 @@ from mc import *
 from ksedb import *
 
 
+def prefix(number):
+    if number < 1000:
+        return number, ""
+    elif number < 1000000:
+        return round(number/1000), "k"
+    else:
+        return round(number/1000000), "M"
+
 
 def log_channel():
     id = os.getenv("LOG_ID")
@@ -209,20 +217,12 @@ async def stocks(ctx, player:Member=None, ticker=None, quantity=0):
         for s in get_user_stock(u[0]):
             if s[0]:
                 total += s[0] * get_price(s[1])[-1][0]
-                embed_stock.add_field(name=s[1], value=f"{s[0]} st\n{round((get_price(s[1])[-1][0] * s[0])/1000)} kmm", inline=True)
+                price = prefix(get_price(s[1])[-1][0] * s[0])
+                embed_stock.add_field(name=s[1], value=f"{s[0]} st\n{price[0]} {price[1]}mm", inline=False)
             print(get_price(s[1])[-1][0])
 
-        prefix = "k"
-        if total < 1000000:
-            total = round(total/1000)
-        else:
-            total = round(total/1000000)
-            prefix = "M"
-
-
-
-
-        embed_stock.add_field(name="TOTAL", value=f"{total} {prefix}mm")
+        total = prefix(total)
+        embed_stock.add_field(name="TOTAL", value=f"{total[0]} {total[1]}mm")
 
         return embed_stock
 
