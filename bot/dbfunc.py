@@ -89,3 +89,14 @@ def user_stock(discordId, ticker, quantity, addedby_discordId):
             return f"Spelare finns inte i databasen finns inte i databasen."
     else:
         return f"Du har inte peronalbehörighet."
+
+
+def company_stock(discordId, ticker, quantity):
+    if staff_perm(discordId):
+        if company_in_database(ticker):
+            company_owedStock(ticker, quantity)
+            return True
+        else:
+            return False, f"{ticker} finns inte i databasen."
+    else:
+        return False, f"Du har inte peronalbehörighet."

@@ -221,3 +221,13 @@ def get_shareholders(ticker, mycursor=None, mydb=None):
             ''')
     result = mycursor.fetchall()
     return result
+
+
+@databse_function
+def company_owedStock(ticker, quantity, mycursor=None, mydb=None):
+    mycursor.execute(f'''
+            UPDATE company
+            set ownedStocks = {quantity}
+            Where ticker = "{ticker}";
+            ''')
+    mydb.commit()

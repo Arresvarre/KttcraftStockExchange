@@ -156,7 +156,7 @@ async def price_error(ctx, error):
 
 
 @bot.command(aliases=['c'])
-async def company(ctx, ticker, subc=None):
+async def company(ctx, ticker, subc=None, q=None):
     e=''
     if await command_in_command_channel(ctx):
         if company_in_database(ticker):
@@ -204,7 +204,13 @@ async def company(ctx, ticker, subc=None):
                         e = embed_message('KSE Bot', f'{c[0]}s aktieägare', m2, thumbnail=c[5])
                     else:
                         e = embed_message('KSE Bot', 'Error', f'{ticker.upper()} finns inte i databasen', color=0xDC143C)
+                elif subc == "stocks":
 
+                    if company_stock(ctx.author.id, ticker, q):
+                        e = embed_message('KSE Bot', f'Uppdaterat antal aktier för {ticker.upper()}', q + " st", thumbnail=c[5],
+                                          color=0x7FFF00)
+                    else:
+                        e = embed_message('KSE Bot', 'Error', company_stock(ctx.author.id, ticker, q)[1], color=0xDC143C)
         else:
             e = embed_message('KSE Bot', 'Error', f'{ticker.upper()} finns inte i databasen', color=0xDC143C)
     if not e:
