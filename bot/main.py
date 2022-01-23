@@ -264,9 +264,22 @@ async def stocks(ctx, player:Member=None, ticker=None, quantity=0):
 
 @bot.command()
 async def test(ctx):
-    import ksedb
-    await ctx.send(get_shareholders("FTHF"))
+    await ctx.send("Test Test")
     pass
 
+
+@bot.command()
+async def admin(ctx):
+    if staff_perm(ctx.author.id):
+        await update_names(ctx)
+
+
+async def update_names(ctx):
+    for i in ctx.channel.members:
+        try:
+            nick = UUID_to_mc_name(get_from_user(i.id)[6])
+            await i.edit(nick=nick)
+        except Exception as e:
+            print(i, e)
 
 bot.run(TOKEN)

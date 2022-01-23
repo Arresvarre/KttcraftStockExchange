@@ -231,3 +231,4 @@ def company_owedStock(ticker, quantity, mycursor=None, mydb=None):
             Where ticker = "{ticker}";
             ''')
     mydb.commit()
+
