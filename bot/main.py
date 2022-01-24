@@ -81,14 +81,32 @@ async def on_message_delete(m):
 
 
 @bot.command(aliases=['u'])
-async def user(ctx, user:Member = None, mc_name = None):
+async def user(ctx, user = None, mc_name = None):
+    nu = False
+    inDatabase = False
+    if user == None:
+        user = get_from_user(ctx.author.id)
+        if user_in_database(ctx.author.id):
+            inDatabase = True
+    else:
+        try:
+            user = ctx.guild.get_member(int(user.strip('<@!>')))
+            if user_in_database(user.id):
+                inDatabase = True
+                user = get_from_user(user.id)
+            else:
+                user = user.id
+        except Exception as e:
+            if valid_mc_name(user):
+                nu = True
+                if uuid_in_database(mc_name_to_UUID(user)):
+                    inDatabase = True
+                    user = get_from_user_uuid(mc_name_to_UUID(user))
+
     e = ''
     if await command_in_command_channel(ctx):
         if mc_name == None:
-            if user == None:
-                user = ctx.author
-            if user_in_database(user.id):
-                user = get_from_user(user.id)
+            if inDatabase:
                 e = embed_message('KSE Bot', UUID_to_mc_name(user[6]),
                                   f'-INFO-\n'
                                   f'UUID : {user[6]}\n'
@@ -99,15 +117,22 @@ async def user(ctx, user:Member = None, mc_name = None):
             else:
                 raise commands.MemberNotFound('Not found player')
         else:
-            if valid_mc_name(mc_name):
+
+            print(user)
+
+            a = [False, "ERROR"]
+            if mc_name == "NU" and nu:
+                a = add_non_user(mc_name_to_UUID(user), ctx.author.id)
+                uuid = mc_name_to_UUID(user)
+            if not nu and valid_mc_name(mc_name):
                 uuid = mc_name_to_UUID(mc_name)
-                a = add_user(user.id, uuid, ctx.author.id)
-                if a[0]:
-                    e = embed_message('KSE Bot', 'Lade till seplare i databas', a[1], color=0x7FFF00, thumbnail=mc.mc_head(uuid))
-                else:
-                    e = embed_message('KSE Bot', 'Error', a[1], color=0xDC143C)
+                a = add_user(user, uuid, ctx.author.id)
+            if a[0]:
+                await update_names(ctx)
+                e = embed_message('KSE Bot', 'Lade till seplare i databas', a[1], color=0x7FFF00, thumbnail=mc.mc_head(uuid))
             else:
-                e = embed_message('KSE Bot', 'Error', 'Minecraft namnet måste finnas...' ,color=0xDC143C)
+                e = embed_message('KSE Bot', 'Error', a[1], color=0xDC143C)
+
         await ctx.send(embed=e)
 
 
@@ -118,9 +143,9 @@ async def user_error(ctx, error):
     if await command_in_command_channel(ctx):
         print(error)
         if isinstance(error, commands.MemberNotFound):
-            e = embed_message('KSE Bot', 'Error', 'Hittade inte spelare. Måste anges med ett @', color=0xDC143C)
+            e = embed_message('KSE Bot', 'Error', 'Hittade inte spelare.', color=0xDC143C)
         elif isinstance(error, commands.errors.CommandInvokeError) or isinstance(error, commands.MissingRequiredArgument):
-            e = embed_message('KSE Bot', 'Error', '.user user mc_name \n Exempel: \n .user @Arivd ZVAR3N', color=0xDC143C)
+            e = embed_message('KSE Bot', 'Error', '.user user mc_name', color=0xDC143C)
         await ctx.send(embed=e)
 
 
@@ -261,6 +286,61 @@ async def stocks(ctx, player:Member=None, ticker=None, quantity=0):
             pass
 
     await ctx.send(embed=e)
+
+
+
+@bot.command()
+async def nus(ctx, player=None, ticker=None, quantity=0):
+    if player is not None:
+        try:
+            player = get_from_user(ctx.guild.get_member(int(player.strip('<@!>'))).id)
+        except Exception as e:
+            print(e)
+            if uuid_in_database(mc_name_to_UUID(player)):
+                player = get_from_user_uuid(mc_name_to_UUID(player))
+
+    def stocks_message(u):
+
+        embed_stock = Embed(title=f'{UUID_to_mc_name(u[6])}s aktier', color=0x00d9ff)
+        embed_stock.set_author(name="KSE Bot")
+        embed_stock.set_thumbnail(url=mc_head(u[6]))
+
+        total = 0
+        print(get_user_stock(u[0]))
+        for s in get_user_stock(u[0]):
+            if s[0]:
+                total += s[0] * get_price(s[1])[-1][0]
+                price = prefix(get_price(s[1])[-1][0] * s[0])
+                embed_stock.add_field(name=s[1], value=f"{s[0]} st\n{price[0]} {price[1]}mm", inline=False)
+            print(get_price(s[1])[-1][0])
+
+        total = prefix(total)
+        embed_stock.add_field(name="TOTAL", value=f"{total[0]} {total[1]}mm")
+
+        return embed_stock
+
+    e = ''
+    if await command_in_command_channel(ctx):
+        if player is None:
+            u = get_from_user(ctx.author.id)
+            e = stocks_message(u)
+        elif ticker is None:
+            if uuid_in_database(player[6]):
+                u = player
+                e = stocks_message(u)
+            else:
+                e = embed_message('KSE Bot', 'Error', f'Spelare är inte i databas', color=0xDC143C)
+        elif ticker is not None:
+            r = user_stock_uuid(player[6], ticker, quantity, ctx.author.id)
+            if r[0]:
+                e = embed_message('KSE Bot', 'Aktieinnehav', r[1], color=0x7FFF00)
+            else:
+                e = embed_message('KSE Bot', 'Aktieinnehav', r[1], color=0xDC143C)
+        else:
+            pass
+
+    await ctx.send(embed=e)
+
 
 @bot.command()
 async def test(ctx):

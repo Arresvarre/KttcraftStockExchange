@@ -62,6 +62,18 @@ def get_from_user_id(user_id, mycursor=None, mydb=None):
     result = mycursor.fetchall()
     return result[0]
 
+
+@databse_function
+def get_from_user_uuid(uuid, mycursor=None, mydb=None):
+    mycursor.execute(f'''
+            SELECT *
+            FROM user
+            WHERE uuid = '{uuid}';
+            ''')
+    result = mycursor.fetchall()
+    return result[0]
+
+
 @databse_function
 def user_in_database(discordId, mycursor=None, mydb=None):
     mycursor.execute(f'''
@@ -134,6 +146,17 @@ def add_user_to_database(discordId, addedById, uuid, mycursor=None, mydb=None):
         ''')
     mydb.commit()
 
+
+@databse_function
+def add_non_user_to_database(addedById, uuid, mycursor=None, mydb=None):
+    mycursor.execute(f'''
+        INSERT INTO user(uuid, addedBy)
+        Values('{uuid}', {addedById})
+        ''')
+    mydb.commit()
+    print("Efer db")
+
+
 @databse_function
 def update_user_stock(userId, ticker, quantity, mycursor=None, mydb=None):
     mycursor.execute(f'''
@@ -142,6 +165,9 @@ def update_user_stock(userId, ticker, quantity, mycursor=None, mydb=None):
         ON DUPLICATE KEY UPDATE quantity={quantity};
         ''')
     mydb.commit()
+
+
+
 
 @databse_function
 def get_user_stock(user, mycursor=None, mydb=None):

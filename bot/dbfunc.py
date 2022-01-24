@@ -40,6 +40,21 @@ def add_user(discordId,uuid, addedby_discordId):
         return False, f'Du har inte peronalbehörighet.'
 
 
+def add_non_user(uuid, addedby_discordId):
+    if staff_perm(addedby_discordId):
+        print(uuid_in_database(uuid))
+        if not uuid_in_database(uuid):
+            dbId = get_from_user(addedby_discordId)[0]
+            print(dbId, uuid)
+            add_non_user_to_database(dbId, uuid)
+            print("Efter add_non...")
+            return [True, f'Lade till {mc.UUID_to_mc_name(uuid)} i databasen.']
+        else:
+            return False, f'{mc.UUID_to_mc_name(get_from_user_uuid(uuid))} finns redan i databsasen.'
+    else:
+        return False, f'Du har inte peronalbehörighet.'
+
+
 def update_addPrice(discordId, addedby_discordId):
     if staff_perm(addedby_discordId):
         if user_in_database(discordId):
@@ -83,6 +98,20 @@ def user_stock(discordId, ticker, quantity, addedby_discordId):
             if company_in_database(ticker):
                 update_user_stock(get_from_user(discordId)[0], ticker, quantity)
                 return True, f"Uppdaterade {mc.UUID_to_mc_name(get_from_user(discordId)[6])}s {get_from_company(ticker)[0]} aktier till {quantity}"
+            else:
+                return False, f"{ticker} finns inte i databasen."
+        else:
+            return f"Spelare finns inte i databasen finns inte i databasen."
+    else:
+        return f"Du har inte peronalbehörighet."
+
+
+def user_stock_uuid(uuid, ticker, quantity, addedby_discordId):
+    if staff_perm(addedby_discordId):
+        if uuid_in_database(uuid):
+            if company_in_database(ticker):
+                update_user_stock(get_from_user_uuid(uuid)[0], ticker, quantity)
+                return True, f"Uppdaterade {mc.UUID_to_mc_name(get_from_user_uuid(uuid)[6])}s {get_from_company(ticker)[0]} aktier till {quantity}"
             else:
                 return False, f"{ticker} finns inte i databasen."
         else:
