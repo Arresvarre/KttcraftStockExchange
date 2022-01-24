@@ -277,7 +277,7 @@ async def stocks(ctx, player=None, ticker=None, quantity=0):
             if s[0]:
                 total += s[0] * get_price(s[1])[-1][0]
                 price = prefix(get_price(s[1])[-1][0] * s[0])
-                embed_stock.add_field(name=s[1], value=f"{s[0]} st\n{price[0]} {price[1]}mm", inline=False)
+                embed_stock.add_field(name=s[1].upper(), value=f"{s[0]} st\n{price[0]} {price[1]}mm", inline=False)
             print(get_price(s[1])[-1][0])
 
         total = prefix(total)
