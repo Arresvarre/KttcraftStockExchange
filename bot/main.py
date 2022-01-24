@@ -3,6 +3,7 @@ import os
 from discord import *
 from discord.ext import commands
 
+
 intents = Intents.default()
 intents.members = True
 intents.messages = True
@@ -152,6 +153,7 @@ async def user_error(ctx, error):
 @bot.command(aliases=['p'])
 async def price(ctx, ticker, price=None):
     e = ''
+    sende = True
     if await command_in_command_channel(ctx):
         if company_in_database(ticker):
             c = get_from_company(ticker)
@@ -162,12 +164,12 @@ async def price(ctx, ticker, price=None):
                 u = update_stock_price(ticker, ctx.author.id, price)
                 if u:
                     e = embed_message('KSE Bot', f'Uppdaterat pris för {c[0]}', price + ' mm', thumbnail=c[5], color=0x7FFF00)
-                    if get_from_company(ticker)[4]:
-                        print(get_from_company(ticker)[4])
-                        print(get_from_company(ticker))
+                    await utils.get(ctx.guild.channels, id=int(c[8])).send(embed=e)
+                    sende = False
         else:
             e = embed_message('KSE Bot', 'Error', f'{ticker.upper()} finns inte i databasen', color=0xDC143C)
-    await ctx.send(embed=e)
+    if sende:
+        await ctx.send(embed=e)
 
 
 @price.error
@@ -308,7 +310,7 @@ async def stocks(ctx, player=None, ticker=None, quantity=0):
 
 @bot.command()
 async def test(ctx):
-    await ctx.send("Test Test")
+    await utils.get(ctx.guild.channels, id=905425195064512563).send("hej")
     pass
 
 
