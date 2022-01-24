@@ -236,6 +236,16 @@ async def company(ctx, ticker, subc=None, q=None):
                                           color=0x7FFF00)
                     else:
                         e = embed_message('KSE Bot', 'Error', company_stock(ctx.author.id, ticker, q)[1], color=0xDC143C)
+                elif subc == "count":
+                    if company_in_database(ticker):
+                        count = 0
+                        for i in get_shareholders(ticker):
+                            count += i[1]
+                        if get_from_company(ticker)[10]:
+                            count += get_from_company(ticker)[10]
+                        e = embed_message('KSE Bot', 'Antal aktier i databasen', f'{count} st \n{get_from_company(ticker)[9]-count} Saknas', thumbnail=get_from_company(ticker)[5])
+                    else:
+                        e = embed_message('KSE Bot', 'Error', f'{ticker.upper()} finns inte i databasen',color=0xDC143C)
         else:
             e = embed_message('KSE Bot', 'Error', f'{ticker.upper()} finns inte i databasen', color=0xDC143C)
     if not e:
