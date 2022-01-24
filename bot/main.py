@@ -244,53 +244,7 @@ async def company(ctx, ticker, subc=None, q=None):
 
 
 @bot.command()
-async def stocks(ctx, player:Member=None, ticker=None, quantity=0):
-    def stocks_message(u):
-
-        embed_stock = Embed(title=f'{UUID_to_mc_name(u[6])}s aktier', color=0x00d9ff)
-        embed_stock.set_author(name="KSE Bot")
-        embed_stock.set_thumbnail(url=mc_head(u[6]))
-
-        total = 0
-        print(get_user_stock(u[0]))
-        for s in get_user_stock(u[0]):
-            if s[0]:
-                total += s[0] * get_price(s[1])[-1][0]
-                price = prefix(get_price(s[1])[-1][0] * s[0])
-                embed_stock.add_field(name=s[1], value=f"{s[0]} st\n{price[0]} {price[1]}mm", inline=False)
-            print(get_price(s[1])[-1][0])
-
-        total = prefix(total)
-        embed_stock.add_field(name="TOTAL", value=f"{total[0]} {total[1]}mm")
-
-        return embed_stock
-
-    e = ''
-    if await command_in_command_channel(ctx):
-        if player is None:
-            u = get_from_user(ctx.author.id)
-            e = stocks_message(u)
-        elif ticker is None:
-            if user_in_database(player.id):
-                u = get_from_user(player.id)
-                e = stocks_message(u)
-            else:
-                e = embed_message('KSE Bot', 'Error', f'Spelare är inte i databas', color=0xDC143C)
-        elif ticker is not None:
-            r = user_stock(player.id, ticker, quantity, ctx.author.id)
-            if r[0]:
-                e = embed_message('KSE Bot', 'Aktieinnehav', r[1], color=0x7FFF00)
-            else:
-                e = embed_message('KSE Bot', 'Aktieinnehav', r[1], color=0xDC143C)
-        else:
-            pass
-
-    await ctx.send(embed=e)
-
-
-
-@bot.command()
-async def nus(ctx, player=None, ticker=None, quantity=0):
+async def stocks(ctx, player=None, ticker=None, quantity=0):
     if player is not None:
         try:
             player = get_from_user(ctx.guild.get_member(int(player.strip('<@!>'))).id)
