@@ -310,14 +310,12 @@ async def stocks(ctx, player=None, ticker=None, quantity=0):
 
 @bot.command()
 async def test(ctx):
-    await utils.get(ctx.guild.channels, id=905425195064512563).send("hej")
     pass
 
-
 @bot.command()
-async def admin(ctx):
+async def admin(ctx, ticker):
     if staff_perm(ctx.author.id):
-        await update_names(ctx)
+        await meeting(ctx, ticker)
 
 
 async def update_names(ctx):
@@ -327,5 +325,16 @@ async def update_names(ctx):
             await i.edit(nick=nick)
         except Exception as e:
             print(i, e)
+
+
+async def meeting(ctx, ticker):
+    for i in get_shareholders(ticker):
+        try:
+            user = utils.get(ctx.message.guild.members, id=int(get_from_user_id(i[0])[1]))
+            e = embed_message("KOTTCRAFT MAPART", "MÖTE IMOROGN 19:00", "Du är välkommen till möte med KCMA imorgon 19:00 :)", thumbnail=get_from_company(ticker)[5])
+            await user.send(embed=e)
+        except Exception as e:
+            print(UUID_to_mc_name(get_from_user_id(i[0])[6]))
+
 
 bot.run(TOKEN)
