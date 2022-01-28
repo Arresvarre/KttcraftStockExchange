@@ -304,7 +304,7 @@ async def stocks(ctx, player=None, ticker=None, quantity=0):
                 e = embed_message('KSE Bot', 'Aktieinnehav', r[1], color=0xDC143C)
         else:
             pass
-
+    await update_roles(ctx)
     await ctx.send(embed=e)
 
 
@@ -315,7 +315,13 @@ async def test(ctx):
 @bot.command()
 async def admin(ctx, ticker):
     if staff_perm(ctx.author.id):
-        await meeting(ctx, ticker)
+        if ticker == "roles":
+            await update_roles(ctx)
+        if ticker == "names":
+            await update_names(ctx)
+        else:
+
+            await meeting(ctx, ticker)
 
 
 async def update_names(ctx):
@@ -327,14 +333,32 @@ async def update_names(ctx):
             print(i, e)
 
 
+async def update_roles(ctx):
+    for i in ctx.channel.members:
+        try:
+            print(get_user_stock(get_from_user(i.id)[0]))
+            for i1 in get_user_stock(get_from_user(i.id)[0]):
+                try:
+                    role = utils.get(ctx.message.guild.roles, id=int(get_from_company(i1[1])[7]))
+                    if i1[0]:
+                        await i.add_roles(role)
+                    elif not i1[0]:
+                        await i.remove_roles(role)
+                except Exception as e:
+                    print(i1, e)
+        except Exception as e:
+            print(i,e)
+
+
 async def meeting(ctx, ticker):
     for i in get_shareholders(ticker):
-        try:
-            user = utils.get(ctx.message.guild.members, id=int(get_from_user_id(i[0])[1]))
-            e = embed_message("KOTTCRAFT MAPART", "MÖTE IMOROGN 19:00", "Du är välkommen till möte med KCMA imorgon 19:00 :)", thumbnail=get_from_company(ticker)[5])
-            await user.send(embed=e)
-        except Exception as e:
-            print(UUID_to_mc_name(get_from_user_id(i[0])[6]))
+        if i[1]:
+            try:
+                user = utils.get(ctx.message.guild.members, id=int(get_from_user_id(i[0])[1]))
+                e = embed_message("KOTTCRAFT MAPART", "MÖTE IMOROGN 19:00", "Du är välkommen till möte med KCMA imorgon 19:00 :)", thumbnail=get_from_company(ticker)[5])
+                await user.send(embed=e)
+            except Exception as e:
+                print(UUID_to_mc_name(get_from_user_id(i[0])[6]))
 
 
 bot.run(TOKEN)
