@@ -300,11 +300,12 @@ async def stocks(ctx, player=None, ticker=None, quantity=0):
             r = user_stock_uuid(player[6], ticker, quantity, ctx.author.id)
             if r[0]:
                 e = embed_message('KSE Bot', 'Aktieinnehav', r[1], color=0x7FFF00)
+                await update_roles(ctx)
             else:
                 e = embed_message('KSE Bot', 'Aktieinnehav', r[1], color=0xDC143C)
         else:
             pass
-    await update_roles(ctx)
+
     await ctx.send(embed=e)
 
 
