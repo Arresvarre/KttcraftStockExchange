@@ -4,11 +4,11 @@ import requests
 import json
 
 def valid_mc_name(mc_name):
-    return mc_name_to_UUID(mc_name)
+    return True
 
 
 def valid_uuid(uuid):
-    return UUID_to_mc_name(uuid)
+    return True
 
 
 def mc_name_to_UUID(name):
@@ -28,7 +28,7 @@ def mc_name_to_UUID(name):
 
 
 def UUID_to_mc_name(uuid):
-    r = requests.get("https://api.mojang.com/user/profiles/{uuid}".format(
+    r = requests.get("https://api.mojang.com/user/profile/{uuid}".format(
         uuid=uuid,
     ), headers={
         'Content-Type': 'application/json',
