@@ -4,12 +4,11 @@ import requests
 import json
 
 def valid_mc_name(mc_name):
-    return True
-
+    return mc_name_to_UUID(mc_name)
 
 
 def valid_uuid(uuid):
-    return True
+    return UUID_to_mc_name(uuid)
 
 
 def mc_name_to_UUID(name):
@@ -18,8 +17,8 @@ def mc_name_to_UUID(name):
 
 
 def mc_name_to_UUID(name):
-    r = requests.get("https://api.mojang.com/user/profile/minecraft/{name}".format(
-        name=name,
+    r = requests.get("https://api.mojang.com/users/profiles/minecraft/{name}".format(
+        name=name, 
     ), headers={
         'Content-Type': 'application/json',
     })
@@ -29,7 +28,7 @@ def mc_name_to_UUID(name):
 
 
 def UUID_to_mc_name(uuid):
-    r = requests.get("https://api.mojang.com/user/profile/{uuid}".format(
+    r = requests.get("https://api.mojang.com/user/profiles/{uuid}".format(
         uuid=uuid,
     ), headers={
         'Content-Type': 'application/json',
