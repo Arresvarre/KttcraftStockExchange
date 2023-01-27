@@ -1,15 +1,15 @@
 
 from mcuuid import MCUUID
-from mcuuid.tools import is_valid_minecraft_username, is_valid_mojang_uuid
 import requests
 import json
 
 def valid_mc_name(mc_name):
-    return is_valid_minecraft_username(mc_name)
+    return True
+
 
 
 def valid_uuid(uuid):
-    return is_valid_mojang_uuid(uuid)
+    return True
 
 
 def mc_name_to_UUID(name):
